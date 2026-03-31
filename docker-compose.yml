@@ -1,0 +1,17 @@
+services:
+  pst-agent:
+    build: .
+    image: pst-agent:latest
+    ports:
+      - "8000:8000"
+    environment:
+      PST_AGENT_PORT: "8000"
+      PST_AGENT_DATA_DIR: /app/state
+      PST_AGENT_DB_PATH: /app/state/index.sqlite3
+    volumes:
+      - ./example-data:/data/inbox:ro
+      - pst-agent-state:/app/state
+    command: ["api"]
+
+volumes:
+  pst-agent-state:

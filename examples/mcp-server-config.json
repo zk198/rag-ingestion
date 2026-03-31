@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "pst-agent": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "-v",
+        "/absolute/path/to/mail:/data/inbox:ro",
+        "-v",
+        "pst-agent-state:/app/state",
+        "pst-agent:latest",
+        "mcp"
+      ],
+      "env": {
+        "PST_AGENT_DATA_DIR": "/app/state",
+        "PST_AGENT_DB_PATH": "/app/state/index.sqlite3"
+      }
+    }
+  }
+}
