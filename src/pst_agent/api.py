@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Form, HTTPException, UploadFile
 from pydantic import BaseModel, Field
 
 from .config import Settings
@@ -64,6 +64,35 @@ def ingest(request: IngestRequest) -> dict:
         )
     except FileNotFoundError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+
+@app.post("/upload")
+async def upload(
+    file: UploadFile,
+    source_name: str = Form(default="default"),
+    account_email: str | None = Form(default=None),
+    account_type: str = Form(default="other"),
+    display_name: str | None = Form(default=None),
+    description: str | None = Form(default=None),
+) -> dict:
+    """Upload an email or document file for ingestion."""
+    if not file.filename:
+        raise HTTPException(status_code=400, detail="filename is required")
+    try:
+        data = await file.read()
+        return service.upload_file(
+            filename=file.filename,
+            data=data,
+            source_name=source_name,
+            account_email=account_email,
+            account_type=account_type,
+            display_name=display_name,
+            description=description,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc)) from exc
 

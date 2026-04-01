@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "bash": "check.sh",
+        "windows": "powershell -ExecutionPolicy Bypass -File .github\\hooks\\log.ps1",
+        "env": {
+          "LOG_LEVEL": "WARNING"
+        },
+        "timeout": 7
+      }
+    ],
+    "SessionStart": [
+      {
+        "type": "command",
+        "bash": "check.sh",
+        "windows": "powershell -ExecutionPolicy Bypass -File .github\\hooks\\log.ps1",
+        "env": {
+          "LOG_LEVEL": "WARNING"
+        },
+        "timeout": 7
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "bash": "check.sh",
+        "windows": "powershell -ExecutionPolicy Bypass -File .github\\hooks\\log.ps1",
+        "env": {
+          "LOG_LEVEL": "WARNING"
+        },
+        "timeout": 7
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "type": "command",
+        "bash": "check.sh",
+        "windows": "powershell -ExecutionPolicy Bypass -File .github\\hooks\\log.ps1",
+        "env": {
+          "LOG_LEVEL": "WARNING"
+        },
+        "timeout": 7
+      }
+    ],
+    "SubagentStop": [
+      {
+        "type": "command",
+        "bash": "check.sh",
+        "windows": "powershell -ExecutionPolicy Bypass -File .github\\hooks\\log.ps1",
+        "env": {
+          "LOG_LEVEL": "WARNING"
+        },
+        "timeout": 7
+      }
+    ],
+    "PostToolUse": [
+      {
+        "type": "command",
+        "bash": "check.sh",
+        "windows": "powershell -ExecutionPolicy Bypass -File .github\\hooks\\log.ps1",
+        "env": {
+          "LOG_LEVEL": "WARNING"
+        },
+        "timeout": 7
+      }
+				],
+    "SessionEnd": [
+      {
+        "type": "command",
+        "bash": "check.sh",
+        "windows": "powershell -ExecutionPolicy Bypass -File .github\\hooks\\log.ps1",
+        "env": {
+          "LOG_LEVEL": "WARNING"
+        },
+        "timeout": 7
+      }
+    ]
+  }
+}

@@ -4,8 +4,10 @@ from pathlib import Path
 from typing import Any
 
 from .config import Settings
+from .extractors import SUPPORTED_DOCUMENT_EXTENSIONS, SUPPORTED_EMAIL_EXTENSIONS
 from .ingest import IngestService
 from .storage import Store
+from .utils import safe_filename
 
 
 class AgentService:
@@ -62,6 +64,35 @@ class AgentService:
 
     def get_source(self, source_name: str) -> dict[str, Any] | None:
         return self.store.get_source(source_name)
+
+    def upload_file(
+        self,
+        filename: str,
+        data: bytes,
+        source_name: str = "default",
+        account_email: str | None = None,
+        account_type: str = "other",
+        display_name: str | None = None,
+        description: str | None = None,
+    ) -> dict[str, Any]:
+        suffix = Path(filename).suffix.lower()
+        allowed = SUPPORTED_EMAIL_EXTENSIONS | SUPPORTED_DOCUMENT_EXTENSIONS
+        if suffix not in allowed:
+            raise ValueError(f"unsupported file type: {suffix}")
+
+        upload_dir = self.settings.data_dir / "uploads" / source_name
+        upload_dir.mkdir(parents=True, exist_ok=True)
+        dest = upload_dir / safe_filename(filename)
+        dest.write_bytes(data)
+
+        return self.ingest_paths(
+            paths=[str(dest)],
+            source_name=source_name,
+            account_email=account_email,
+            account_type=account_type,
+            display_name=display_name,
+            description=description,
+        )
 
     def list_sources(self) -> list[dict[str, Any]]:
         return self.store.list_sources()
