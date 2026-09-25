@@ -28,6 +28,7 @@ services:
       PST_AGENT_PORT: "8000"
       PST_AGENT_DATA_DIR: /app/state
       RAG_TENANT_ID: default
+      RAG_TRUST_CONTEXT_HEADERS: "true"
     volumes:
       - ./example-data:/data/inbox:ro
       - pst-agent-state:/app/state
