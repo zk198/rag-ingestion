@@ -2,7 +2,7 @@ name: tests
 
 on:
   push:
-    branches: [fix/ci-pyproject]
+    branches: [main, fix/ci-pyproject]
   pull_request:
 
 jobs:
