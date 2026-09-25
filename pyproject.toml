@@ -25,7 +25,14 @@ dependencies = [
   "psycopg[binary]>=3.2,<4.0",
 ]
 
-[project.optional-dependencies]\ntest = ["pytest>=8.3,<9.0", "pytest-cov>=5.0,<7.0", "pytest-asyncio>=0.24,<1.0"]\n\n[tool.pytest.ini_options]\ntestpaths = ["tests"]\naddopts = "-ra"\n\n[project.scripts]
+[project.optional-dependencies]
+test = ["pytest>=8.3,<9.0", "pytest-cov>=5.0,<7.0", "pytest-asyncio>=0.24,<1.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[project.scripts]
 pst-agent = "pst_agent.cli:main"
 
 [tool.setuptools]
