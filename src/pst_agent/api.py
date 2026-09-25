@@ -34,7 +34,7 @@ service = AgentService(Settings.from_env())
 async def tenant_context_middleware(request: Request, call_next):
     # Header-derived tenant/user context is disabled by default. Enable it only
     # when this service is reachable exclusively through the authenticated gateway.
-    if os.getenv("RAG_TRUST_CONTEXT_HEADERS", "false").lower() != "true":
+    if request.url.path == "/healthz" or os.getenv("RAG_TRUST_CONTEXT_HEADERS", "false").lower() != "true":
         return await call_next(request)
 
     tenant_id = request.headers.get("X-RAG-Tenant-ID")
