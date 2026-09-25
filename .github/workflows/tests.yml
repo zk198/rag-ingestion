@@ -23,6 +23,7 @@ jobs:
           --health-timeout 5s
           --health-retries 20
     env:
+      PST_AGENT_POSTGRES_DSN: postgresql://rag:rag@localhost:5432/rag
       TEST_POSTGRES_DSN: postgresql://rag:rag@localhost:5432/rag
       RAG_TENANT_ID: test-tenant
     steps:
