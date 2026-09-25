@@ -26,6 +26,9 @@ jobs:
       PST_AGENT_POSTGRES_DSN: postgresql://rag:rag@localhost:5432/rag
       TEST_POSTGRES_DSN: postgresql://rag:rag@localhost:5432/rag
       RAG_TENANT_ID: test-tenant
+      PST_AGENT_DATA_DIR: ${{ runner.temp }}/pst-agent-state
+      PST_AGENT_TEMP_DIR: ${{ runner.temp }}/pst-agent-tmp
+      PST_AGENT_ATTACHMENTS_DIR: ${{ runner.temp }}/pst-agent-attachments
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
