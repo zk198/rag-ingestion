@@ -1,10 +1,13 @@
 from __future__ import annotations
 
-from fastapi import FastAPI, Form, HTTPException, UploadFile
+import os
+
+from fastapi import FastAPI, Form, HTTPException, Request, UploadFile
 from pydantic import BaseModel, Field
 
 from .config import Settings
 from .service import AgentService
+from .storage import tenant_context
 
 
 class IngestRequest(BaseModel):
@@ -25,6 +28,21 @@ class SearchRequest(BaseModel):
 
 app = FastAPI(title="PST Agent API", version="0.1.0")
 service = AgentService(Settings.from_env())
+
+
+@app.middleware("http")
+async def tenant_context_middleware(request: Request, call_next):
+    # Header-derived tenant/user context is disabled by default. Enable it only
+    # when this service is reachable exclusively through the authenticated gateway.
+    if os.getenv("RAG_TRUST_CONTEXT_HEADERS", "false").lower() != "true":
+        return await call_next(request)
+
+    tenant_id = request.headers.get("X-RAG-Tenant-ID")
+    user_id = request.headers.get("X-RAG-User-ID")
+    if not tenant_id:
+        raise HTTPException(status_code=401, detail="tenant context is required")
+    with tenant_context(tenant_id, user_id):
+        return await call_next(request)
 
 
 @app.get("/healthz")
