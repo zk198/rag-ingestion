@@ -22,3 +22,14 @@ def test_service_store_contract_preserved():
 
 def test_ingest_public_signature_unchanged():
     assert list(inspect.signature(IngestService.ingest_paths).parameters) == ["self", "paths", "source_name", "rebuild"]
+
+
+
+def test_health_endpoint():
+    from fastapi.testclient import TestClient
+    from pst_agent import api
+
+    response = TestClient(api.app).get("/health")
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "ok"
